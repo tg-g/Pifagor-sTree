@@ -1,0 +1,61 @@
+<html> 
+  <head>
+      <title>Дерево Пифагора</title>
+      <script type="text/javascript">	  
+        // функция рисует под углом линию из указанной точки длиной ln
+        function drawLine(x, y, ln, angle) {
+          context.moveTo(x, y);
+          context.lineTo(Math.round(x + ln * Math.cos(angle)), Math.round(y - ln * Math.sin(angle)));
+        }
+      // Функция рисует дерево
+        function drawTree(x, y, ln, minLn, angle) {
+		var n2;
+	   n2 = document.getElementById('a2').value;
+	   var n3;
+	   n3 = document.getElementById('a3').value;
+          if (ln > minLn) {
+              ln = ln*0.75 ;//на сколько уменьшается линия 
+              drawLine(x, y, ln, angle);
+              x = Math.round(x + ln * Math.cos(angle));
+              y = Math.round(y - ln * Math.sin(angle));
+              drawTree(x, y, ln, minLn, angle + n2 * Math.PI / 180);
+              drawTree(x, y, ln, minLn, angle - n3 * Math.PI / 180);
+          }
+        }
+        // Инициализация переменных
+        function init() {
+		  var n1;
+		  n1 = document.getElementById('a1').value;
+          var canvas = document.getElementById("tree");
+          context = canvas.getContext("2d");
+          canvas.width = 800; // Ширина холста
+          canvas.height = 550; // высота холста
+          var x = canvas.width / 2;
+          var y = canvas.height;
+          var ln = 180; // начальная длина линии
+          var minLn ; // минимальная длина до которой рисуются линии
+		  minLn = n1;
+          context.fillStyle = "black"; // цвет фона
+          context.strokeStyle = "green"; //цвет линий
+          context.fillRect(0, 0, canvas.width, canvas.height);
+          context.lineWidth = 1; // ширина линий
+          context.beginPath();
+          drawTree(x, y, ln, minLn, Math.PI / 2);
+          context.stroke();
+        }	
+		
+	
+      </script>
+  </head>
+  <body >
+   <!-- <canvas id="tree"></canvas>&nbsp -->
+	  <canvas id="tree"
+	  width=800 height=550
+	  style="border:#000000 solid 1px;">
+	  </canvas> <br>
+	<input onclick="init();" type="button" style="width:100px; height:30px" value="Нарисовать"><br>
+	 <b>Глубина прорисовки:</b> <input type="number" min=-100 max=100 value=4 id="a1">  <br>
+	 <b>Угол поворота левой ветви равен </b> <input type="number" min=-100 max=100 value=45 id="a2"> <b>градусов</b><br>
+	   <b>Угол поворота правой ветви равен </b>  <input type="number" min=-100 max=100 value=45 id="a3"> <b>градусов</b>
+  </body> 
+</html>
